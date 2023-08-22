@@ -51,7 +51,7 @@ def get_employee_todo_progress(employee_id):
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print("Usage: ./employee_todo_progress.py EMPLOYEE_ID")
+        print("Usage: ./1-export_to_CSV.py EMPLOYEE_ID")
         sys.exit(1)
 
     employee_id = sys.argv[1]
