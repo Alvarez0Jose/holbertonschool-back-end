@@ -3,6 +3,7 @@
 module to get employees to do progress
 """
 import requests
+import sys
 
 
 def get_employee_todo_progress(employee_id):
@@ -33,5 +34,9 @@ def get_employee_todo_progress(employee_id):
 
 
 if __name__ == "__main__":
-    employee_id = 'EMPLOYEE_ID'
+    if len(sys.argv) != 2:
+        print("Usage: ./employee_todo_progress.py EMPLOYEE_ID")
+        sys.exit(1)
+
+    employee_id = sys.argv[1]
     get_employee_todo_progress(employee_id)
