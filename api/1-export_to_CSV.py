@@ -26,7 +26,7 @@ def get_employee_todo_progress(employee_id):
     employee_name = user_data["name"]
     total_tasks = len(todo_data)
     completed_tasks = sum(1 for task in todo_data if task["completed"])
-    completed_tasks_titles = [task["titile"]
+    completed_tasks_titles = [task["title"]
                               for task in todo_data if task["completed"]]
 
     print(
@@ -42,7 +42,7 @@ def get_employee_todo_progress(employee_id):
                             "TASK_TITLE"])
 
         for task in todo_data:
-            task_completed_status = "Completed" if task["completed"]else "Not Completed"
+            task_completed_status = "Completed" if task["completed"] else "Not Completed"
             csv_writer.writerow(
                 [employee_id, employee_name, task_completed_status, task["title"]])
 
