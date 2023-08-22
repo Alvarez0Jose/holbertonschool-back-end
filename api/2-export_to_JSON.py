@@ -7,7 +7,7 @@ import requests
 import sys
 
 
-def export_employee_todo_to_json(employee_id):
+def get_employee_todo_progress(employee_id):
     """
     Gets and displays Employee's progress
     """
@@ -47,4 +47,4 @@ if __name__ == "__main__":
         sys.exit(1)
 
     employee_id = sys.argv[1]
-    export_employee_todo_to_json(employee_id)
+    get_employee_todo_progress(employee_id)
