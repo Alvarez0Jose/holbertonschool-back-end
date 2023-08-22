@@ -30,9 +30,7 @@ def get_employee_todo_progress(employee_id):
             "username": employee_name
         })
 
-    result = {"USER_ID": todo_list}
-
-    print(json.dumps(result, indent=4))
+    result = {employee_id: todo_list}
 
     json_filename = f"{employee_id}.json"
     with open(json_filename, "w") as json_file:
