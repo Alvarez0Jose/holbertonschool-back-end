@@ -13,24 +13,24 @@ def get_employee_todo_progress(employee_id):
     """
     base_url = "https://jsonplaceholder.typicode.com"
     user_response = requests.get(f"{base_url}/users/{employee_id}")
-    todo_response = requests.get("f{base_url}/todos?userId={employee_id}")
+    todo_response = requests.get(f"{base_url}/todos?userId={employee_id}")
 
     if user_response.status_code != 200 or todo_response.status_code != 200:
-        print("Error: Unable to fetch data form the API")
+        print("Error: Unable to fetch data from the API")
         return
     user_data = user_response.json()
-    todo_data = user_response.json()
+    todo_data = todo_response.json()
 
     employee_name = user_data["name"]
     todo_list = []
     for task in todo_data:
-        todo_list.append([
+        todo_list.append({
             "task": task["title"],
             "completed": task["completed"],
             "username": employee_name
-        ])
+        })
 
-    result = {employee_id: todo_list}
+    result = {"USER_ID": todo_list}
 
     print(json.dumps(result, indent=4))
 
