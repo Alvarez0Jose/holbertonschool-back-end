@@ -24,18 +24,19 @@ def get_employee_todo_progress(employee_id):
     employee_name = user_data["name"]
     total_tasks = len(todo_data)
     completed_tasks = sum(1 for task in todo_data if task["completed"])
-    completed_tasks_titles = [task["title"]
-                              for task in todo_data if task["completed"]]
+    total_completed_tasks_titles = [
+        task["title"] for task in todo_data if task["completed"]]
 
     print(
         f"Employee {employee_name} is done with tasks ({completed_tasks}/{total_tasks}):")
-    for title in completed_tasks_titles:
+
+    for title in total_completed_tasks_titles:
         print(f"\t{title}")
 
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print("Usage: ./employee_todo_progress.py EMPLOYEE_ID")
+        print("Usage: ./0-gather_data_from_an_API.py EMPLOYEE_ID")
         sys.exit(1)
 
     employee_id = sys.argv[1]
