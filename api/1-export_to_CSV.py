@@ -4,6 +4,7 @@ module to get employees to do progress
 """
 import csv
 import requests
+import sys
 
 
 def get_employee_todo_progress(employee_id):
@@ -23,6 +24,16 @@ def get_employee_todo_progress(employee_id):
 
     employee_id = user_data["id"]
     employee_name = user_data["name"]
+    total_tasks = len(todo_data)
+    completed_tasks = sum(1 for task in todo_data if task["completed"])
+    completed_tasks_titles = [task["titile"]
+                              for task in todo_data if task["completed"]]
+
+    print(
+        f"Employee {employee_name} is done with tasks ({completed_tasks}/{total_tasks}):"
+    )
+    for title in completed_tasks_titles:
+        print(f"\t{title}")
 
     csv_filename = f"{employee_id}.csv"
     with open(csv_filename, "w", newline="") as csvfile:
@@ -39,5 +50,9 @@ def get_employee_todo_progress(employee_id):
 
 
 if __name__ == "__main__":
-    employee_id = 'EMPLOYEE_ID'
+    if len(sys.argv) != 2:
+        print("Usage: ./employee_todo_progress.py EMPLOYEE_ID")
+        sys.exit(1)
+
+    employee_id = sys.argv[1]
     get_employee_todo_progress(employee_id)
