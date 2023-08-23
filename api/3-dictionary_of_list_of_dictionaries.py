@@ -36,7 +36,7 @@ def get_all_employees_todo_progress():
 
         todo_data = todo_response.json()
 
-        user_task = []
+        user_tasks = []
         for task in todo_data:
             user_tasks.append({
                 "username": username,
@@ -46,16 +46,16 @@ def get_all_employees_todo_progress():
 
             all_employee_data[user_id] = user_tasks
 
-        return all_employee_data
+    return all_employee_data
 
-    if __name__ == "__main__":
-        all_employee_tasks = get_all_employees_todo_progress()
+if __name__ == "__main__":
+     all_employee_tasks = get_all_employees_todo_progress()
 
-        if not all_employee_tasks:
-            sys.exit(1)
+    if not all_employee_tasks:
+        sys.exit(1)
 
-        json_filename = "todo_all_employees.json"
-        with open(json_filename, "w") as json_file:
-            json.dump(all_employee_tasks, json_file, indent=4)
+    json_filename = "todo_all_employees.json"
+    with open(json_filename, "w") as json_file:
+        json.dump(all_employee_tasks, json_file, indent=4)
 
-        print(f"JSON file '{json_filename}' created successfully.")
+    print(f"JSON file '{json_filename}' created successfully.")
