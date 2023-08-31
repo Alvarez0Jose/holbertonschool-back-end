@@ -1,61 +1,42 @@
 #!/usr/bin/python3
 """
-This Module gets all the employees progress
+Module that exports data to JSON
 """
-import json
 import requests
-import sys
+import json
 
 
-def get_all_employees_todo_progress():
-    """
-    Funtion to get progress per employee
-    """
-    base_url = "https://jsonplaceholder.typicode.com/users"
-    users_response = requests.get(base_url)
+if __name__ == '__main__':
+    todo_dict = {}
 
-    if users_response.status_code != 200:
-        print("Error: Unable to fetch user data from the API.")
-        return
+    # Fetch user data
+    users_api = requests.get('https://jsonplaceholder.typicode.com/users/')
+    if users_api.status_code == 200:
+        users = users_api.json()
 
-    all_employee_data = {}
+        for user in users:
+            user_id = user['id']
+            user_todo_query = {'userId': user_id}
+            todos_api = requests.get(
+                'https://jsonplaceholder.typicode.com/todos',
+                params=user_todo_query)
 
-    user_data = users_response.json()
+            if todos_api.status_code == 200:
+                todo_list = todos_api.json()
 
-    for user in users_data:
-        user_id = user["id"]
-        username = user["username"]
+                employee_name = user['username']
+                tasks = []
 
-        todo_response = requests.get(
-            f"https://jsonplaceholder.typicode.com/todos?userId={user_id}")
+                for todo in todo_list:
+                    task = {'username': employee_name, 'task': todo['title'],
+                            'completed': todo['completed']}
+                    tasks.append(task)
 
-        if todo_response.status_code != 200:
-            print(
-                f"Error: Unable to fetch TODO data for user {username} from the API.")
-            continue
+                todo_dict[user_id] = tasks
 
-        todo_data = todo_response.json()
+        # Serializing to JSON
+        json_object = json.dumps(todo_dict)
 
-        user_tasks = []
-        for task in todo_data:
-            user_tasks.append({
-                "username": username,
-                "task": task["title"],
-                "completed": task["completed"]
-            })
-
-            all_employee_data[user_id] = user_tasks
-
-    return all_employee_data
-
-if __name__ == "__main__":
-     all_employee_tasks = get_all_employees_todo_progress()
-
-    if not all_employee_tasks:
-        sys.exit(1)
-
-    json_filename = "todo_all_employees.json"
-    with open(json_filename, "w") as json_file:
-        json.dump(all_employee_tasks, json_file, indent=4)
-
-    print(f"JSON file '{json_filename}' created successfully.")
+        # Writing to JSON file
+        with open('todo-all_employees.json', 'w') as jsonfile:
+            jsonfile.write(json_object)
