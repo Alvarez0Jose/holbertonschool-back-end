@@ -1,16 +1,12 @@
 #!/usr/bin/python3
-"""
-Module that export data in CSV format
-"""
+"""Script that export data in CSV format"""
 from sys import argv
 import requests
 import csv
 
 
 def employee_info():
-    """
-    Function that returns info of employee
-    """
+    """function that return info of employee"""
     USER_ID = int(argv[1])
     EMPLOYEE_NAME = ""
     task_obj = []
@@ -34,9 +30,7 @@ def employee_info():
 
 
 def csv_export(USER_ID, EMPLOYEE_NAME, task_obj):
-    """
-    Exports the employee info to csv
-    """
+    """Exports the employee info to csv"""
     filename = "{}.csv".format(USER_ID)
 
     with open(filename, mode='w', newline='') as csvfile:

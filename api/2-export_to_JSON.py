@@ -1,48 +1,34 @@
 #!/usr/bin/python3
-"""
-In this Module we're exporting to a JSON using API's
-"""
-import json
+"""script that export data to json"""
+from sys import argv
 import requests
-import sys
+import json
 
 
-def get_employee_todo_progress(employee_id):
-    """
-    Gets and displays Employee's progress
-    """
-    base_url = "https://jsonplaceholder.typicode.com"
-    user_response = requests.get(f"{base_url}/users/{employee_id}")
-    todo_response = requests.get(f"{base_url}/todos?userId={employee_id}")
+if __name__ == '__main__':
 
-    if user_response.status_code != 200 or todo_response.status_code != 200:
-        print("Error: Unable to fetch data from the API")
-        return
-    user_data = user_response.json()
-    todo_data = todo_response.json()
+    user_id = int(argv[1])
+    users_response = requests.get(
+        'https://jsonplaceholder.typicode.com/users/{}'.format(user_id))
+    todos_response = requests.get(
+        'https://jsonplaceholder.typicode.com/todos?userId={}'.format(user_id))
+    employee_name = ''
 
-    employee_name = user_data["name"]
-    todo_list = []
-    for task in todo_data:
-        todo_list.append({
-            "task": task["title"],
-            "completed": task["completed"],
-            "username": employee_name
-        })
+    if users_response.status_code == 200 and todos_response.status_code == 200:
+        users = users_response.json()
+        todos = todos_response.json()
 
-    result = {employee_id: todo_list}
+        if users['id'] == user_id:
+            employee_name = users['username']
 
-    json_filename = f"{employee_id}.json"
-    with open(json_filename, "w") as json_file:
-        json.dump(result, json_file, indent=4)
+        filename = f'{user_id}.json'
+        user_dict = {user_id: []}
 
-    print(f"JSON file '{json_filename}' created successfully.")
+        for info in todos:
+            dict = {
+                'task': info['title'], 'completed': info['completed'],
+                'username': employee_name}
+            user_dict.get(user_id).append(dict)
 
-
-if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: ./2-export_to_JSON.py EMPLOYEE_ID")
-        sys.exit(1)
-
-    employee_id = sys.argv[1]
-    get_employee_todo_progress(employee_id)
+        with open(filename, 'w', encoding='utf-8') as f:
+            json.dump(user_dict, f)

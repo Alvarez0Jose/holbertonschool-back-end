@@ -1,7 +1,5 @@
 #!/usr/bin/python3
-"""
-Module that exports data to JSON
-"""
+"""Script that exports data to JSON"""
 import requests
 import json
 
